@@ -319,20 +319,15 @@ def convert_pdf(
 
     for idx, blocks in enumerate(all_pages):
         page_no = start_page + idx
-        if not blocks:
-            out_lines.append(f"\n<!-- Page {page_no} -->\n")
-            continue
-
-        formatted = format_page(blocks)
-        if not formatted:
-            out_lines.append(f"\n<!-- Page {page_no} -->\n")
-            continue
-
-        print(f"[{page_no}/{end}] {len(formatted)} chars ({len(blocks)} blocks)")
-        out_lines.append(f"\n<!-- Page {page_no} -->\n")
-        out_lines.append(formatted)
-        out_lines.append("\n")
-
+        formatted = format_page(blocks) if blocks else ""
+        if formatted:
+            print(f"[{page_no}/{end}] {len(formatted)} chars ({len(blocks)} blocks)")
+        if idx > 0:
+            out_lines.append("\n\n---\n\n")  # visual page break
+        out_lines.append(f"<!-- Page {page_no} -->\n")
+        if formatted:
+            out_lines.append(formatted)
+            out_lines.append("\n")
     doc.close()
 
     out_path.write_text("".join(out_lines), encoding="utf-8")
