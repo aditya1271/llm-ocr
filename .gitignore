@@ -11,6 +11,9 @@ output/
 pages/
 ocr/
 images/
-*.md
 *.txt
 .DS_Store
+
+# Ignore all .md files except README.md
+*.md
+!README.md
